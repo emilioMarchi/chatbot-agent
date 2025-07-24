@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat con IA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    #chat-container {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 50px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .user { background-color: #dcf8c6; text-align: right; }
+    .bot { background-color: #f1f0f0; text-align: left; }
+    #input-container {
+      display: flex;
+    }
+    #user-input {
+      flex-grow: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #send-button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="messages"></div>
+    <div id="input-container">
+      <input type="text" id="user-input" placeholder="Escribí tu mensaje...">
+      <button id="send-button">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const messagesContainer = document.getElementById('messages');
+    const input = document.getElementById('user-input');
+    const button = document.getElementById('send-button');
+
+    function appendMessage(text, className) {
+      const div = document.createElement('div');
+      div.className = 'message ' + className;
+      div.innerText = text;
+      messagesContainer.appendChild(div);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const userText = input.value.trim();
+      if (!userText) return;
+      appendMessage(userText, 'user');
+      input.value = '';
+
+      const res = await fetch('/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userText })
+      });
+
+      const data = await res.json();
+      appendMessage(data.response || 'Error de respuesta', 'bot');
+    }
+
+    button.onclick = sendMessage;
+    input.addEventListener('keypress', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+</body>
+</html>

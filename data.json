@@ -1,0 +1,122 @@
+{
+  "eventos": [
+    {
+      "titulo": "Peña La Cantada",
+      "fecha": "Sábado 27 de julio",
+      "hora": "21:00",
+      "lugar": "Asociación Cultural El Puente",
+      "descripcion": "Una noche de música popular con los grupos del taller de canto coordinado por María Paula Rodríguez. Entrada libre y salida a la gorra.",
+      "reserva": "https://wa.me/5493425551234?text=Hola!%20Quiero%20reservar%20para%20la%20Peña%20La%20Cantada",
+      "flyer": "https://elpuente.org.ar/flyers/pena-la-cantada.jpg"
+    },
+    {
+      "titulo": "Feria del Pulque",
+      "fecha": "Domingo 4 de agosto",
+      "hora": "17:00",
+      "lugar": "Patio de El Puente",
+      "descripcion": "Feria de productores locales con música en vivo, comidas, cerveza artesanal y puestos de diseño independiente.",
+      "info": "https://elpuente.org.ar/eventos/feria-del-pulque",
+      "contacto_feriantes": "https://wa.me/5493425551234?text=Hola!%20Quisiera%20consultar%20para%20ser%20feriante%20en%20la%20Feria%20del%20Pulque"
+    },
+    {
+      "titulo": "Recital de Primavera",
+      "fecha": "Viernes 16 de agosto",
+      "hora": "20:30",
+      "lugar": "Salón Principal - El Puente",
+      "descripcion": "Show en vivo de bandas locales para recibir la primavera. Entrada anticipada: $3000.",
+      "entradas": "https://elpuente.org.ar/entradas/recital-primavera",
+      "compra_por_whatsapp": "https://wa.me/5493425551234?text=Hola!%20Quiero%20comprar%20entradas%20para%20el%20Recital%20de%20Primavera"
+    },
+    {
+      "titulo": "Festival de Teatro Independiente",
+      "fecha": "Sábado 24 de agosto",
+      "hora": "18:00",
+      "lugar": "Sala Principal",
+      "descripcion": "Funciones de teatro independiente de grupos de Santa Fe y alrededores. Entrada libre con reserva previa.",
+      "reserva": "https://forms.gle/teatro-festival-elpuente",
+      "programa": "https://elpuente.org.ar/programacion/festival-teatro.pdf"
+    },
+    {
+      "titulo": "Jam de Movimiento",
+      "fecha": "Miércoles 28 de agosto",
+      "hora": "19:30",
+      "lugar": "Salón de Talleres",
+      "descripcion": "Encuentro libre de danza y expresión corporal, abierto a todo público.",
+      "info": "https://elpuente.org.ar/eventos/jam-movimiento",
+      "consultas": "https://wa.me/5493425551234?text=Hola!%20Quiero%20saber%20más%20sobre%20la%20Jam%20de%20Movimiento"
+    },
+    {
+      "titulo": "Cine Debate: 'La Libertad'",
+      "fecha": "Viernes 6 de septiembre",
+      "hora": "20:00",
+      "lugar": "Sala Audiovisual",
+      "descripcion": "Proyección de la película 'La Libertad' de Lisandro Alonso y charla posterior con invitades. Entrada gratuita.",
+      "reserva_asiento": "https://elpuente.org.ar/reservas/cine-la-libertad",
+      "trailer": "https://youtube.com/watch?v=fake_trailer_libertad"
+    },
+    {
+      "titulo": "Peña del Estudiante",
+      "fecha": "Sábado 21 de septiembre",
+      "hora": "21:00",
+      "lugar": "Patio de El Puente",
+      "descripcion": "Festejo del Día del Estudiante con bandas, comidas y barra popular. Entrada libre.",
+      "flyer": "https://elpuente.org.ar/flyers/pena-estudiante.jpg",
+      "más_info": "https://instagram.com/elpuente?highlight=estudiante"
+    },
+    {
+      "titulo": "Taller Abierto de Impro",
+      "fecha": "Domingo 29 de septiembre",
+      "hora": "17:00",
+      "lugar": "Salón de Talleres",
+      "descripcion": "Clase gratuita abierta de improvisación teatral. Cupos limitados.",
+      "inscripción": "https://forms.gle/taller-impro-gratis",
+      "contacto": "https://wa.me/5493425551234?text=Hola!%20Quiero%20anotarme%20en%20el%20taller%20abierto%20de%20impro"
+    }
+  ],
+  "talleres": [
+    {
+      "nombre": "Teatro para principiantes",
+      "dias": "Lunes y miércoles",
+      "hora": "18:30 a 20:30",
+      "profesor": "Martín Pérez",
+      "descripcion": "Un espacio para descubrir el cuerpo y la escena desde el juego y la expresión.",
+      "inscripcion": "https://elpuente.org.ar/talleres/teatro-principiantes",
+      "consultas": "https://wa.me/5493425551234?text=Hola!%20Tengo%20dudas%20sobre%20el%20taller%20de%20teatro"
+    },
+    {
+      "nombre": "Canto colectivo",
+      "dias": "Martes",
+      "hora": "19:00 a 21:00",
+      "profesor": "María Paula Rodríguez",
+      "descripcion": "Un taller para explorar la voz en grupo, sin necesidad de experiencia previa.",
+      "inscripcion": "https://elpuente.org.ar/talleres/canto-colectivo",
+      "consultas": "https://wa.me/5493425551234?text=Hola!%20Quiero%20saber%20más%20sobre%20el%20taller%20de%20canto"
+    },
+    {
+      "nombre": "Circo para niñes",
+      "dias": "Sábados",
+      "hora": "10:00 a 11:30",
+      "profesor": "Julián Almada",
+      "descripcion": "Acrobacias, malabares y juegos para peques de 6 a 12 años.",
+      "inscripcion": "https://elpuente.org.ar/talleres/circo-nines",
+      "consultas": "https://wa.me/5493425551234?text=Hola!%20Me%20interesa%20el%20taller%20de%20circo%20para%20niñes"
+    }
+  ],
+  "espacio": {
+    "direccion": "25 de Mayo 3423, Santa Fe Capital",
+    "descripcion": "Centro cultural autogestionado con talleres, recitales, ferias y más. Gestionado por artistas locales desde 2017.",
+    "mapa": "https://goo.gl/maps/elpuente-mapa"
+  },
+  "contacto": {
+    "instagram": "https://instagram.com/elpuente",
+    "whatsapp": "https://wa.me/5493425551234",
+    "email": "elpuente.cultural@gmail.com",
+    "sitio_web": "https://elpuente.org.ar"
+  },
+  "servicios": {
+    "alquiler_de_sala": "El espacio se puede alquilar para ensayos, presentaciones o talleres. Consultar disponibilidad por WhatsApp.",
+    "alquiler_info": "https://wa.me/5493425551234?text=Hola!%20Quiero%20consultar%20por%20el%20alquiler%20de%20una%20sala",
+    "barra": "Durante los eventos se ofrece barra con bebidas y comidas caseras.",
+    "escenario": "Escenario equipado con luces y sonido básico. Ideal para recitales acústicos y obras pequeñas."
+  }
+}
