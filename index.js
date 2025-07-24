@@ -6,11 +6,14 @@ import { connectFirestore } from "./config/db.js";
 
 import path from 'path';
 import { fileURLToPath } from 'url';
+import cookieParser from 'cookie-parser';
 
-dotenv.config();
 const app = express();
+
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
+dotenv.config();
 
 // Conexión a Firebase
 connectFirestore();
