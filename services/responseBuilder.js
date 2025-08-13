@@ -25,7 +25,7 @@ async function generateResponse(mensaje, historial = []) {
     }));
 
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.0-flash-lite-001",
       systemInstruction: SYSTEM_INSTRUCTION,
     });
 
