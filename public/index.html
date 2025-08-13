@@ -106,6 +106,15 @@
     const input = document.getElementById('user-input');
     const button = document.getElementById('send-button');
 
+    // Genera y guarda un ID de usuario único para la sesión del navegador.
+    // Esto permite al backend mantener un historial de conversación separado para cada usuario.
+    let userId = sessionStorage.getItem('userId');
+    if (!userId) {
+      // crypto.randomUUID() es un estándar moderno para generar IDs únicos.
+      userId = crypto.randomUUID();
+      sessionStorage.setItem('userId', userId);
+    }
+
     function appendMessage(text, className) {
       const div = document.createElement('div');
       div.className = 'message ' + className;
@@ -117,24 +126,34 @@
     async function sendMessage() {
       const userText = input.value.trim();
       if (!userText) return;
+
       appendMessage(userText, 'user');
       input.value = '';
 
       try {
         const res = await fetch("/chatbot", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // <- para que mande la cookie
-        body: JSON.stringify({ message: userText })
-      });
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // Enviamos el userId junto con el mensaje para que el backend mantenga el historial
+          body: JSON.stringify({ userId: userId, message: userText }),
+        });
 
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({ error: 'Respuesta inválida del servidor' }));
+          throw new Error(errorData.error || `Error HTTP ${res.status}`);
+        }
 
         const data = await res.json();
-        appendMessage(data.response || 'Error de respuesta', 'bot');
+        // La respuesta del backend viene en la propiedad 'reply', no 'response'.
+        appendMessage(data.reply || 'No se recibió una respuesta válida.', 'bot');
       } catch (err) {
-        appendMessage('Hubo un error al conectarse con el servidor.', 'bot');
+        console.error("Error al enviar mensaje:", err);
+        appendMessage(err.message || 'Hubo un error al conectarse con el servidor.', 'bot');
       }
     }
+
+
+
 
     button.onclick = sendMessage;
     input.addEventListener('keypress', e => {
