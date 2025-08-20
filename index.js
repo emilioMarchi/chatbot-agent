@@ -28,16 +28,11 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-import twilioRouter from './routes/twilio.js'
-app.use('/twilio', twilioRouter)
-
 import intentionRouter from './routes/intention.js'
 app.use("/chatbot", intentionRouter);
 
-import chatRouter from "./routes/chat.js";
-app.use("/chat", chatRouter);
-
-
+import metaWebHook from './routes/metaWebHook.js'
+app.use('/wpp', metaWebHook)
 // Ruta de prueba
 app.get("/", (req, res) => {
   res.send("Servidor chatbot corriendo 🟢");

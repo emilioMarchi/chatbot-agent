@@ -14,6 +14,8 @@
   "description": "",
   "type": "module",
   "dependencies": {
+    "@google-cloud/speech": "^7.2.0",
+    "@google-cloud/text-to-speech": "^6.2.0",
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.10.0",
     "cookie-parser": "^1.4.7",
@@ -22,6 +24,8 @@
     "express": "^5.1.0",
     "firebase": "^12.0.0",
     "fs": "^0.0.1-security",
+    "multer": "^2.0.2",
+    "path": "^0.12.7",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

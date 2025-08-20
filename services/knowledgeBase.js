@@ -1,3 +1,4 @@
+// knowledgeBase.js
 import fs from 'fs';
 import genAI from '../config/gemini.js';
 
@@ -79,7 +80,7 @@ async function initializeKnowledgeBase() {
 }
 
 // 3. Buscar en la base de conocimientos
-async function searchKnowledgeBase(query, topK = 3) {
+async function searchKnowledgeBase(query, topK = 3, similarityThreshold = 0.7) {
   if (!knowledgeBase) {
     throw new Error("La base de conocimientos no está inicializada o está en proceso. Intente de nuevo en unos segundos.");
   }
@@ -94,7 +95,10 @@ async function searchKnowledgeBase(query, topK = 3) {
 
   similarities.sort((a, b) => b.similarity - a.similarity);
 
-  return similarities.slice(0, topK).map(item => item.text).join('\n\n');
+  // Filtrar solo los documentos que superen el umbral de similitud
+  const filtered = similarities.filter(item => item.similarity >= similarityThreshold);
+
+  return filtered.slice(0, topK).map(item => item.text).join('\n\n');
 }
 
 export { initializeKnowledgeBase, searchKnowledgeBase };

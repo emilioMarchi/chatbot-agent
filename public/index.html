@@ -1,164 +1,302 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Chat con IA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<title>Chat con OVNI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(120deg, #e0f7fa, #80deea);
+  margin: 0;
+  padding: 0;
+}
 
-    #chat-container {
-      max-width: 600px;
-      margin: auto;
-      margin-top: 50px;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      height: 80vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+#chat-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: #ffffffee;
+  padding: 20px;
+  border-radius: 16px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  backdrop-filter: blur(8px);
+}
 
-    #messages {
-      flex-grow: 1;
-      overflow-y: auto;
-      margin-bottom: 10px;
-    }
+#messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding-right: 5px;
+}
 
-    .message {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 5px;
-      word-wrap: break-word;
-    }
+.message {
+  margin: 8px 0;
+  padding: 12px 18px;
+  border-radius: 25px;
+  word-wrap: break-word;
+  max-width: 80%;
+  font-size: 15px;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
 
-    .user {
-      background-color: #dcf8c6;
-      text-align: right;
-    }
+.user {
+  background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+  text-align: right;
+  margin-left: auto;
+}
 
-    .bot {
-      background-color: #f1f0f0;
-      text-align: left;
-    }
+.bot {
+  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
+  text-align: left;
+  margin-right: auto;
+}
 
-    #input-container {
-      display: flex;
-      gap: 10px;
-    }
+.bot.typing::after {
+  content: '…';
+  animation: blink 1s infinite;
+  margin-left: 5px;
+}
 
-    #user-input {
-      flex-grow: 1;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
+@keyframes blink {
+  0%,50%,100% {opacity:1;}
+  25%,75% {opacity:0;}
+}
 
-    #send-button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+#input-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 
-    #send-button:hover {
-      background-color: #45a049;
-    }
+#user-input {
+  flex-grow: 1;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+}
 
-    @media (max-width: 600px) {
-      #chat-container {
-        margin: 10px;
-        height: 90vh;
-        padding: 15px;
-      }
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
 
-      #input-container {
-        flex-direction: column;
-      }
+button:hover { background: rgba(0,0,0,0.05); }
 
-      #send-button {
-        width: 100%;
-      }
-    }
-  </style>
+#send-button svg, #record-button svg {
+  width: 24px;
+  height: 24px;
+  fill: #555;
+}
+
+/* Avatar agente */
+#agent-avatar {
+  width: 50px;
+  height: 50px;
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.wave {
+  width: 5px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 2px;
+  transform-origin: bottom;
+  animation: wave 1s infinite;
+}
+.wave:nth-child(2) { animation-delay: 0.2s; }
+.wave:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes wave {
+  0%,100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+@media (max-width:600px){
+  #chat-container { margin:10px; height:90vh; padding:15px; }
+  #input-container { flex-direction: row; }
+  button { width: 40px; height: 40px; }
+}
+</style>
 </head>
 <body>
-  <div id="chat-container">
-    <div id="messages"></div>
-    <div id="input-container">
-      <input type="text" id="user-input" placeholder="Escribí tu mensaje...">
-      <button id="send-button">Enviar</button>
-    </div>
+<div id="chat-container">
+  <div id="agent-avatar">
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
   </div>
+  <div id="messages"></div>
+  <div id="input-container">
+    <input type="text" id="user-input" placeholder="Escribí tu mensaje...">
+    <button id="send-button" title="Enviar">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+    </button>
+    <button id="record-button" title="Hablar">
+      <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2z"/></svg>
+    </button>
+  </div>
+</div>
 
-  <script>
-    const messagesContainer = document.getElementById('messages');
-    const input = document.getElementById('user-input');
-    const button = document.getElementById('send-button');
+<script>
+const messagesContainer = document.getElementById('messages');
+const input = document.getElementById('user-input');
+const sendButton = document.getElementById('send-button');
+const recordButton = document.getElementById('record-button');
+const agentWaves = document.querySelectorAll('#agent-avatar .wave');
 
-    // Genera y guarda un ID de usuario único para la sesión del navegador.
-    // Esto permite al backend mantener un historial de conversación separado para cada usuario.
-    let userId = sessionStorage.getItem('userId');
-    if (!userId) {
-      // crypto.randomUUID() es un estándar moderno para generar IDs únicos.
-      userId = crypto.randomUUID();
-      sessionStorage.setItem('userId', userId);
-    }
+let userId = sessionStorage.getItem('userId');
+if(!userId){ userId = crypto.randomUUID(); sessionStorage.setItem('userId', userId); }
 
-    function appendMessage(text, className) {
-      const div = document.createElement('div');
-      div.className = 'message ' + className;
-      div.innerText = text;
-      messagesContainer.appendChild(div);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
+function appendMessage(text, className){
+  const div = document.createElement('div');
+  div.className = 'message '+className;
+  div.innerText = text;
+  messagesContainer.appendChild(div);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
 
-    async function sendMessage() {
-      const userText = input.value.trim();
-      if (!userText) return;
+function setAvatarState(state){
+  agentWaves.forEach(w=>{
+    if(state==='recording') w.style.background='#f44336';
+    else if(state==='speaking') w.style.background='#4CAF50';
+    else w.style.background='#ccc';
+  });
+}
 
-      appendMessage(userText, 'user');
-      input.value = '';
+// Enviar mensaje al chatbot
+async function sendMessage(text){
+  if(!text) return;
+  appendMessage(text,'user');
+  input.value='';
 
-      try {
-        const res = await fetch("/chatbot", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          // Enviamos el userId junto con el mensaje para que el backend mantenga el historial
-          body: JSON.stringify({ userId: userId, message: userText }),
-        });
+  const botMessageDiv=document.createElement('div');
+  botMessageDiv.className='message bot typing';
+  botMessageDiv.innerText='Escribiendo';
+  messagesContainer.appendChild(botMessageDiv);
+  messagesContainer.scrollTop=messagesContainer.scrollHeight;
 
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => ({ error: 'Respuesta inválida del servidor' }));
-          throw new Error(errorData.error || `Error HTTP ${res.status}`);
+  try{
+    const res=await fetch("/chatbot",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({userId,message:text})});
+    if(!res.ok) throw new Error('Error al enviar mensaje');
+
+    const data=await res.json();
+    botMessageDiv.classList.remove('typing');
+    botMessageDiv.innerText=data.reply||'No se recibió respuesta.';
+
+    if(data.audioBase64){
+      const audioBlob=new Blob([Uint8Array.from(atob(data.audioBase64),c=>c.charCodeAt(0))],{type:'audio/mp3'});
+      const audioURL=URL.createObjectURL(audioBlob);
+      const audioEl=new Audio(audioURL);
+      setAvatarState('speaking');
+      audioEl.play();
+      audioEl.onended=()=>setAvatarState('idle');
+    }else setAvatarState('idle');
+
+  }catch(err){
+    console.error(err);
+    botMessageDiv.classList.remove('typing');
+    botMessageDiv.innerText='Error al procesar la respuesta.';
+    setAvatarState('idle');
+  }
+}
+
+sendButton.onclick=()=>sendMessage(input.value);
+input.addEventListener('keypress',e=>{if(e.key==='Enter') sendMessage(input.value);});
+
+// === Grabación automática por voz con detección de silencio ===
+let mediaRecorder, audioChunks=[], audioContext, analyser, source;
+let speaking = false;
+
+recordButton.onclick=async ()=>{
+  if(!mediaRecorder){
+    setAvatarState('recording');
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    audioContext = new AudioContext();
+    source = audioContext.createMediaStreamSource(stream);
+    analyser = audioContext.createAnalyser();
+    source.connect(analyser);
+    analyser.fftSize = 2048;
+
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    speaking = false;
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+    mediaRecorder.start();
+
+    const dataArray = new Uint8Array(analyser.fftSize);
+    let silenceStart = null;
+
+    const detectSilence = () => {
+      analyser.getByteTimeDomainData(dataArray);
+      let max = 0;
+      for(let i=0;i<dataArray.length;i++) max = Math.max(max, Math.abs(dataArray[i]-128));
+      if(max<5){
+        if(speaking && !silenceStart) silenceStart = Date.now();
+        if(speaking && silenceStart && Date.now()-silenceStart>800){
+          stopRecording();
         }
+      } else { speaking = true; silenceStart = null; }
+      requestAnimationFrame(detectSilence);
+    };
+    detectSilence();
+  }
+};
 
-        const data = await res.json();
-        // La respuesta del backend viene en la propiedad 'reply', no 'response'.
-        appendMessage(data.reply || 'No se recibió una respuesta válida.', 'bot');
-      } catch (err) {
-        console.error("Error al enviar mensaje:", err);
-        appendMessage(err.message || 'Hubo un error al conectarse con el servidor.', 'bot');
-      }
-    }
+async function stopRecording(){
+  if(!mediaRecorder) return;
 
+  // Esperar a que el MediaRecorder realmente termine
+  await new Promise(resolve=>{
+    mediaRecorder.onstop = () => resolve();
+    mediaRecorder.stop();
+  });
 
+  setAvatarState('idle');
 
+  const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
 
-    button.onclick = sendMessage;
-    input.addEventListener('keypress', e => {
-      if (e.key === 'Enter') sendMessage();
-    });
-  </script>
+  if (audioBlob.size < 100) {
+    appendMessage("No se detectó suficiente audio.", "bot");
+    audioChunks = [];
+    mediaRecorder = null;
+    speaking = false;
+    return;
+  }
+
+  audioChunks = [];
+  mediaRecorder = null;
+  speaking = false;
+
+  const formData = new FormData();
+  formData.append('audio', audioBlob, 'voz.webm');
+
+  try{
+    const sttRes = await fetch('/chatbot/stt', { method:'POST', body: formData });
+    const sttData = await sttRes.json();
+    if(sttData.text) sendMessage(sttData.text);
+  }catch(err){
+    console.error(err);
+    appendMessage('Error al procesar el audio.','bot');
+    setAvatarState('idle');
+  }
+}
+</script>
 </body>
 </html>

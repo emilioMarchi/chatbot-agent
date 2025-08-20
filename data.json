@@ -1,135 +1,87 @@
 {
-  "informacion_general": {
-    "nombre": "Sanatorio Vida Salud",
-    "descripcion": "Centro médico integral con más de 30 años de experiencia en atención ambulatoria, internación y emergencias.",
-    "direccion": "Av. Libertad 2450, Ciudad del Sol",
-    "telefono": "+54 11 4567 8900",
-    "email": "contacto@vidasalud.com",
-    "sitio_web": "https://vidasalud.com"
+  "nombre": "Ovni",
+  "web": "ovnistudio.com.ar",
+  "ubicacion": "Santa Fe, Argentina",
+  "contacto": {
+    "telefono": "+54 342 5161099",
+    "email": "contacto@ovnistudio.com.ar"
   },
-  "especialidades": [
-    "Clínica médica",
-    "Pediatría",
-    "Cardiología",
-    "Traumatología",
-    "Ginecología",
-    "Dermatología",
-    "Oftalmología",
-    "Neurología",
-    "Endocrinología",
-    "Gastroenterología",
-    "Oncología"
-  ],
-  "doctores": [
-    {
-      "nombre": "Dr. Juan Pérez",
-      "especialidad": "Cardiología",
-      "matricula": "MN 12345",
-      "dias_atencion": "Lunes, Miércoles y Viernes",
-      "horario": "09:00 a 13:00"
-    },
-    {
-      "nombre": "Dra. María Gómez",
-      "especialidad": "Pediatría",
-      "matricula": "MN 67890",
-      "dias_atencion": "Martes y Jueves",
-      "horario": "14:00 a 19:00"
-    },
-    {
-      "nombre": "Dr. Ricardo López",
-      "especialidad": "Traumatología",
-      "matricula": "MN 11223",
-      "dias_atencion": "Lunes a Viernes",
-      "horario": "08:00 a 12:00"
-    }
-  ],
-  "servicios": [
-    {
-      "nombre": "Emergencias 24hs",
-      "descripcion": "Atención médica de urgencia en cualquier momento del día.",
-      "telefono": "+54 11 4567 8911"
-    },
-    {
-      "nombre": "Internación",
-      "descripcion": "Habitaciones individuales y compartidas con atención médica permanente."
-    },
-    {
-      "nombre": "Imágenes y Diagnóstico",
-      "descripcion": "Resonancias, ecografías, radiografías y laboratorio clínico."
-    },
-    {
-      "nombre": "Cirugías Programadas",
-      "descripcion": "Procedimientos quirúrgicos con coordinación previa y preoperatorio."
-    }
-  ],
-  "guardias": {
-    "direccion": "Entrada por calle Belgrano 550",
-    "telefono": "+54 11 4567 8922",
-    "disponibilidad": "24 horas, todos los días"
-  },
-  "turnos_online": {
-    "plataforma": "https://turnos.vidasalud.com",
-    "instrucciones": "Registrarse, elegir especialidad y profesional, luego seleccionar fecha y horario disponible."
-  },
-  "farmacia": {
-    "horario": "Lunes a viernes de 8:00 a 20:00, sábados de 9:00 a 14:00",
-    "telefono": "+54 11 4567 8933",
-    "servicios": [
-      "Venta de medicamentos con receta",
-      "Entrega de medicación para pacientes internados",
-      "Asesoramiento farmacéutico"
+  "descripcion": "Ovni es un estudio de comunicación que integra producción audiovisual y desarrollo de infraestructura digital, ofreciendo soluciones creativas y técnicas para marcas que quieren comunicarse de manera efectiva con sus clientes. No ofrecemos servicios de marketing digital propios, pero trabajamos junto con profesionales del área para integrar contenido e infraestructura digital en campañas de comunicación.",
+  "servicios": {
+    "contenido": [
+      "Fotografía profesional para redes, productos y campañas",
+      "Producción de video: spots, reels, entrevistas y documentales",
+      "Edición de video y postproducción",
+      "Diseño gráfico y branding",
+      "Creación de contenido creativo para redes sociales"
+    ],
+    "infraestructura_digital": [
+      "Diseño y desarrollo de sitios web corporativos y portfolios",
+      "Implementación de chatbots inteligentes",
+      "Tiendas online y soluciones de e-commerce",
+      "Automatización de procesos y comunicación digital",
+      "Integración de herramientas digitales para clientes",
+      "Mantenimiento y soporte de infraestructura web"
     ]
   },
-  "obras_sociales": [
-    "OSDE",
-    "Swiss Medical",
-    "Medifé",
-    "Galeno",
-    "PAMI",
-    "IOMA",
-    "Federada Salud",
-    "Sancor Salud",
-    "OMINT",
-    "Prevención Salud"
-  ],
-  "seguros_medicos": [
+  "productos_destacados": [
     {
-      "nombre": "Plan Salud Total",
-      "cobertura": "Consultas, internación, cirugías y estudios al 100%",
-      "contacto": "+54 11 4567 8944"
+      "nombre": "Chatbot inteligente",
+      "descripcion": "Sistema de atención y comunicación automatizada con clientes, configurable para distintos tipos de proyectos y marcas."
     },
     {
-      "nombre": "Plan Familiar Plus",
-      "cobertura": "Consultas y estudios con 80% de reintegro",
-      "contacto": "+54 11 4567 8945"
+      "nombre": "Portfolio Web",
+      "descripcion": "Sitios web personalizados que muestran productos, servicios y casos de éxito de manera profesional."
+    },
+    {
+      "nombre": "E-commerce llave en mano",
+      "descripcion": "Solución completa de tienda online con integración de pagos y gestión de inventario."
     }
   ],
-  "precios_referenciales": [
+  "forma_de_trabajo": [
+    "Ofrecemos paquetes optimizados para ejecución rápida y eficiente",
+    "Desarrollamos soluciones a medida según las necesidades de cada cliente",
+    "Acompañamos desde la estrategia inicial hasta la entrega final del producto",
+    "Combinamos creatividad y tecnología en todos los proyectos",
+    "Integramos nuestro contenido y soluciones digitales con campañas de marketing digital mediante colaboración con especialistas externos"
+  ],
+  "propuesta_valor": "Combinamos contenido audiovisual y tecnología digital en un solo estudio, colaborando con especialistas en marketing digital cuando se requiere, para que las marcas puedan comunicar de forma efectiva, rápida y profesional.",
+  "casos_de_exito": [
     {
-      "practica": "Consulta clínica",
-      "precio": 5000
+      "cliente": "Emprendimiento local de gastronomía",
+      "servicio": "Producción de video y fotografías para redes + implementación de tienda online",
+      "resultado": "Aumento de interacción en redes y ventas online en un 40%."
     },
     {
-      "practica": "Electrocardiograma",
-      "precio": 3000
-    },
-    {
-      "practica": "Resonancia magnética",
-      "precio": 25000
+      "cliente": "Marca de indumentaria",
+      "servicio": "Creación de catálogo digital + chatbot de atención al cliente",
+      "resultado": "Mejora en la atención al cliente y reducción de consultas repetitivas."
     }
   ],
-  "campañas_salud": [
+  "faqs": [
     {
-      "nombre": "Control de hipertensión",
-      "descripcion": "Chequeo gratuito de presión arterial durante todo el mes de mayo.",
-      "ubicacion": "Hall principal",
-      "horario": "08:00 a 18:00"
+      "pregunta": "¿Trabajan con pymes y emprendimientos?",
+      "respuesta": "Sí, adaptamos nuestros servicios a empresas grandes, pymes y proyectos individuales."
     },
     {
-      "nombre": "Vacunación antigripal",
-      "descripcion": "Aplicación gratuita para mayores de 65 años y pacientes con factores de riesgo.",
-      "ubicacion": "Consultorio 12",
-      "horario": "Lunes a viernes 09:00 a 16:00"
+      "pregunta": "¿Puedo contratar solo contenido o solo infraestructura digital?",
+      "respuesta": "Sí, los servicios pueden contratarse de manera independiente o combinada."
+    },
+    {
+      "pregunta": "¿Cuánto tiempo tardan en entregar un proyecto?",
+      "respuesta": "Depende del tamaño y complejidad del proyecto, pero normalmente tenemos tiempos optimizados y definidos en el presupuesto."
+    },
+    {
+      "pregunta": "¿Cómo solicito un presupuesto?",
+      "respuesta": "Podés escribirnos por teléfono, email o desde el sitio web ovnistudio.com.ar."
+    },
+    {
+      "pregunta": "¿Ofrecen soporte post-entrega?",
+      "respuesta": "Sí, brindamos seguimiento y soporte para todos los productos digitales que desarrollamos."
+    },
+    {
+      "pregunta": "¿Ofrecen servicios de marketing digital?",
+      "respuesta": "No, OVNI no ofrece marketing digital propio, pero podemos colaborar con especialistas para integrar nuestro contenido e infraestructura digital en sus campañas."
     }
   ]
 }
