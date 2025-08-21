@@ -43,93 +43,87 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.user {
-  background: linear-gradient(135deg, #a8e6cf, #dcedc1);
-  text-align: right;
-  margin-left: auto;
-}
-
-.bot {
-  background: linear-gradient(135deg, #ffe0b2, #ffcc80);
-  text-align: left;
-  margin-right: auto;
-}
+.user { background: linear-gradient(135deg, #a8e6cf, #dcedc1); text-align:right; margin-left:auto; }
+.bot { background: linear-gradient(135deg, #ffe0b2, #ffcc80); text-align:left; margin-right:auto; }
 
 .bot.typing::after {
-  content: '…';
+  content: '...';
   animation: blink 1s infinite;
-  margin-left: 5px;
+  margin-left:5px;
 }
 
-@keyframes blink {
-  0%,50%,100% {opacity:1;}
-  25%,75% {opacity:0;}
-}
+@keyframes blink { 0%,50%,100% {opacity:1;} 25%,75% {opacity:0;} }
 
+/* Audio bubble */
+.audio-bubble { 
+  padding: 10px 14px;
+  border-radius: 20px;
+  max-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  position: relative;
+}
+.audio-bubble.user { background: linear-gradient(135deg, #a8e6cf, #dcedc1); margin-left:auto; justify-content:flex-end; }
+.audio-bubble.bot { background: linear-gradient(135deg, #ffe0b2, #ffcc80); margin-right:auto; justify-content:flex-start; }
+
+.audio-bubble button.play-btn { border:none; background:none; cursor:pointer; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.audio-bubble button.play-btn svg { width:18px; height:18px; fill:#555; }
+.audio-bubble input[type=range] { flex-grow:1; }
+.audio-bubble select { width:50px; font-size:12px; }
+
+/* Input row */
 #input-container {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
 }
 
 #user-input {
-  flex-grow: 1;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
+  flex-grow:1;
+  padding:12px;
+  font-size:16px;
+  border:1px solid #ccc;
+  border-radius:25px;
 }
 
 button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.3s;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  transition: background 0.3s, transform 0.05s;
 }
-
 button:hover { background: rgba(0,0,0,0.05); }
+button:active { transform: scale(0.98); }
+#send-button svg, #record-button svg { width:24px; height:24px; fill:#555; }
 
-#send-button svg, #record-button svg {
-  width: 24px;
-  height: 24px;
-  fill: #555;
-}
-
-/* Avatar agente */
+/* Avatar */
 #agent-avatar {
-  width: 50px;
-  height: 50px;
-  margin: 10px auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  width:50px; height:50px;
+  margin:10px auto;
+  display:flex; justify-content:space-between; align-items:flex-end;
 }
-.wave {
-  width: 5px;
-  height: 20px;
-  background: #ccc;
-  border-radius: 2px;
-  transform-origin: bottom;
-  animation: wave 1s infinite;
-}
-.wave:nth-child(2) { animation-delay: 0.2s; }
-.wave:nth-child(3) { animation-delay: 0.4s; }
+.wave { width:5px; height:20px; background:#ccc; border-radius:2px; transform-origin:bottom; }
+.wave.animate { animation: wave 1s infinite; }
+.wave:nth-child(2).animate { animation-delay:0.2s; }
+.wave:nth-child(3).animate { animation-delay:0.4s; }
+@keyframes wave { 0%,100% {transform:scaleY(0.3);} 50% {transform:scaleY(1);} }
 
-@keyframes wave {
-  0%,100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
-}
+/* Grabación */
+#record-button.recording { background: rgba(244,67,54,0.12); }
+#record-button.recording svg { fill:#d32f2f; }
 
 @media (max-width:600px){
   #chat-container { margin:10px; height:90vh; padding:15px; }
-  #input-container { flex-direction: row; }
-  button { width: 40px; height: 40px; }
+  #user-input { min-width:0; }
+  button { width:40px; height:40px; }
 }
 </style>
 </head>
@@ -141,12 +135,13 @@ button:hover { background: rgba(0,0,0,0.05); }
     <div class="wave"></div>
   </div>
   <div id="messages"></div>
+
   <div id="input-container">
     <input type="text" id="user-input" placeholder="Escribí tu mensaje...">
     <button id="send-button" title="Enviar">
       <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
     </button>
-    <button id="record-button" title="Hablar">
+    <button id="record-button" title="Mantener para hablar">
       <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2z"/></svg>
     </button>
   </div>
@@ -162,141 +157,149 @@ const agentWaves = document.querySelectorAll('#agent-avatar .wave');
 let userId = sessionStorage.getItem('userId');
 if(!userId){ userId = crypto.randomUUID(); sessionStorage.setItem('userId', userId); }
 
-function appendMessage(text, className){
+function setAvatarState(state){
+  agentWaves.forEach(w=>{
+    w.classList.remove("animate");
+    if(state==='botAudio') { w.style.background='#ff9800'; w.classList.add("animate"); }
+    else if(state==='userAudio') { w.style.background='#2196F3'; w.classList.add("animate"); }
+    else { w.style.background='#ccc'; }
+  });
+}
+
+function appendTextMessage(text, className){
   const div = document.createElement('div');
   div.className = 'message '+className;
   div.innerText = text;
   messagesContainer.appendChild(div);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  return div;
 }
 
-function setAvatarState(state){
-  agentWaves.forEach(w=>{
-    if(state==='recording') w.style.background='#f44336';
-    else if(state==='speaking') w.style.background='#4CAF50';
-    else w.style.background='#ccc';
-  });
+function appendAudioMessage(url, className, who='bot'){
+  const div = document.createElement('div');
+  div.className = 'message audio-bubble '+className;
+
+  const playBtn = document.createElement('button');
+  playBtn.className='play-btn';
+  playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+
+  const audio = document.createElement('audio'); audio.src=url;
+
+  const slider = document.createElement('input'); slider.type='range'; slider.min=0; slider.max=100; slider.value=0;
+  const speedSelect = document.createElement('select');
+  [0.5,1,1.5,2].forEach(v=>{ const opt=document.createElement('option'); opt.value=v; opt.innerText=v+'x'; if(v===1) opt.selected=true; speedSelect.appendChild(opt); });
+
+  playBtn.onclick = ()=>{
+    if(audio.paused){ 
+      audio.play(); 
+      playBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>`; 
+      setAvatarState(who==='bot'?'botAudio':'userAudio'); 
+    } else { 
+      audio.pause(); 
+      playBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`; 
+      setAvatarState('idle'); 
+    }
+  };
+
+  if(who==='bot'){ audio.autoplay = true; audio.play().catch(()=>{}); }
+
+  audio.ontimeupdate = ()=> slider.value=(audio.currentTime/audio.duration)*100||0;
+  slider.oninput = ()=> audio.currentTime=(slider.value/100)*audio.duration;
+  speedSelect.onchange = ()=> audio.playbackRate=parseFloat(speedSelect.value);
+
+  audio.onended = ()=> { playBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`; setAvatarState('idle'); };
+
+  div.appendChild(playBtn);
+  div.appendChild(slider);
+  div.appendChild(speedSelect);
+  messagesContainer.appendChild(div);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  return div;
 }
 
-// Enviar mensaje al chatbot
+// ===== Enviar texto y audio con typing =====
 async function sendMessage(text){
   if(!text) return;
-  appendMessage(text,'user');
+  appendTextMessage(text,'user');
   input.value='';
 
-  const botMessageDiv=document.createElement('div');
-  botMessageDiv.className='message bot typing';
-  botMessageDiv.innerText='Escribiendo';
-  messagesContainer.appendChild(botMessageDiv);
-  messagesContainer.scrollTop=messagesContainer.scrollHeight;
+  // Placeholder typing
+  const botPlaceholder = document.createElement('div');
+  botPlaceholder.className = 'message bot typing';
+  messagesContainer.appendChild(botPlaceholder);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+  setAvatarState('botAudio');
 
   try{
-    const res=await fetch("/chatbot",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({userId,message:text})});
-    if(!res.ok) throw new Error('Error al enviar mensaje');
+    const res = await fetch("/chatbot",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({userId,message:text}) });
+    const data = await res.json();
 
-    const data=await res.json();
-    botMessageDiv.classList.remove('typing');
-    botMessageDiv.innerText=data.reply||'No se recibió respuesta.';
+    botPlaceholder.remove(); // siempre removemos placeholder antes de mostrar contenido
 
-    if(data.audioBase64){
-      const audioBlob=new Blob([Uint8Array.from(atob(data.audioBase64),c=>c.charCodeAt(0))],{type:'audio/mp3'});
-      const audioURL=URL.createObjectURL(audioBlob);
-      const audioEl=new Audio(audioURL);
-      setAvatarState('speaking');
-      audioEl.play();
-      audioEl.onended=()=>setAvatarState('idle');
-    }else setAvatarState('idle');
+    if(data.reply) appendTextMessage(data.reply,'bot');
+   
 
+    setAvatarState('idle');
   }catch(err){
     console.error(err);
-    botMessageDiv.classList.remove('typing');
-    botMessageDiv.innerText='Error al procesar la respuesta.';
+    botPlaceholder.remove();
+    appendTextMessage('Error al procesar la respuesta.','bot');
     setAvatarState('idle');
   }
 }
 
-sendButton.onclick=()=>sendMessage(input.value);
-input.addEventListener('keypress',e=>{if(e.key==='Enter') sendMessage(input.value);});
+sendButton.onclick = ()=> sendMessage(input.value);
+input.addEventListener('keypress', e => { if(e.key==='Enter') sendMessage(input.value); });
 
-// === Grabación automática por voz con detección de silencio ===
-let mediaRecorder, audioChunks=[], audioContext, analyser, source;
-let speaking = false;
-
-recordButton.onclick=async ()=>{
-  if(!mediaRecorder){
-    setAvatarState('recording');
-    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    audioContext = new AudioContext();
-    source = audioContext.createMediaStreamSource(stream);
-    analyser = audioContext.createAnalyser();
-    source.connect(analyser);
-    analyser.fftSize = 2048;
-
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
-    speaking = false;
-
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-
-    mediaRecorder.start();
-
-    const dataArray = new Uint8Array(analyser.fftSize);
-    let silenceStart = null;
-
-    const detectSilence = () => {
-      analyser.getByteTimeDomainData(dataArray);
-      let max = 0;
-      for(let i=0;i<dataArray.length;i++) max = Math.max(max, Math.abs(dataArray[i]-128));
-      if(max<5){
-        if(speaking && !silenceStart) silenceStart = Date.now();
-        if(speaking && silenceStart && Date.now()-silenceStart>800){
-          stopRecording();
-        }
-      } else { speaking = true; silenceStart = null; }
-      requestAnimationFrame(detectSilence);
-    };
-    detectSilence();
-  }
-};
-
+// ===== Grabación =====
+let mediaRecorder=null, audioChunks=[], micStream=null;
+async function startRecording(){ 
+  try{ micStream = await navigator.mediaDevices.getUserMedia({audio:true}); } catch(e){ console.error(e); return; }
+  recordButton.classList.add('recording'); setAvatarState('userAudio');
+  mediaRecorder=new MediaRecorder(micStream); audioChunks=[]; mediaRecorder.ondataavailable=e=>audioChunks.push(e.data); mediaRecorder.start();
+}
 async function stopRecording(){
   if(!mediaRecorder) return;
+  recordButton.classList.remove('recording'); setAvatarState('idle');
+  await new Promise(res=>{ mediaRecorder.onstop=res; mediaRecorder.stop(); });
+  if(micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream=null; }
 
-  // Esperar a que el MediaRecorder realmente termine
-  await new Promise(resolve=>{
-    mediaRecorder.onstop = () => resolve();
-    mediaRecorder.stop();
-  });
-
-  setAvatarState('idle');
-
-  const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-
-  if (audioBlob.size < 100) {
-    appendMessage("No se detectó suficiente audio.", "bot");
-    audioChunks = [];
-    mediaRecorder = null;
-    speaking = false;
-    return;
-  }
-
-  audioChunks = [];
-  mediaRecorder = null;
-  speaking = false;
-
-  const formData = new FormData();
-  formData.append('audio', audioBlob, 'voz.webm');
+  const audioBlob = new Blob(audioChunks,{type:'audio/webm'}); audioChunks=[]; mediaRecorder=null;
+  if(audioBlob.size<100) return;
+  const userURL=URL.createObjectURL(audioBlob); appendAudioMessage(userURL,'user','user');
 
   try{
-    const sttRes = await fetch('/chatbot/stt', { method:'POST', body: formData });
-    const sttData = await sttRes.json();
-    if(sttData.text) sendMessage(sttData.text);
-  }catch(err){
-    console.error(err);
-    appendMessage('Error al procesar el audio.','bot');
+    const formData=new FormData(); 
+    formData.append('audio',audioBlob,'voz.webm'); 
+    formData.append('userId',userId);
+
+    const botPlaceholder = document.createElement('div');
+    botPlaceholder.className = 'message bot typing';
+    messagesContainer.appendChild(botPlaceholder);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    const res=await fetch('/chatbot',{method:'POST',body:formData}); 
+    const data=await res.json();
+
+    botPlaceholder.remove();
+
+    if(data.audioBase64){ 
+      const botAudioBlob=new Blob([Uint8Array.from(atob(data.audioBase64),c=>c.charCodeAt(0))], {type:'audio/mp3'}); 
+      appendAudioMessage(URL.createObjectURL(botAudioBlob),'bot','bot'); 
+    } else if(data.reply){ appendTextMessage(data.reply,'bot'); }
+
     setAvatarState('idle');
-  }
+  }catch(err){ console.error(err); appendTextMessage('Error al procesar el audio.','bot'); setAvatarState('idle'); }
 }
+
+const start=e=>{ e.preventDefault(); if(!mediaRecorder) startRecording(); };
+const end=e=>{ e.preventDefault(); if(mediaRecorder) stopRecording(); };
+recordButton.addEventListener("mousedown", start); 
+recordButton.addEventListener("touchstart", start,{passive:false});
+recordButton.addEventListener("mouseup", end); 
+recordButton.addEventListener("mouseleave", end); 
+recordButton.addEventListener("touchend", end,{passive:false});
 </script>
 </body>
 </html>
