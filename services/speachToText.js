@@ -26,11 +26,11 @@ async function textToSpeech(text, outputPath) {
       modelId: "eleven_multilingual_v2",
 
       outputFormat: "mp3_44100_128",
-      stability: 0.5,       // control de "consistencia" de la voz, 0 a 1
-      similarityBoost: 0.5, // qué tanto se parece al voiceId original, 0 a 1
+      stability: 0.1,       // control de "consistencia" de la voz, 0 a 1
+      similarityBoost: 0.8, // qué tanto se parece al voiceId original, 0 a 1
       style: "happy",       // puede ser "neutral", "sad", "happy", etc. según el voiceId
-      pitch: 1.2,           // ajuste del tono, >1 más agudo, <1 más grave
-      rate: 1.2             // velocidad de habla, >1 más rápido, <1 más lento
+      pitch: 1.7,           // ajuste del tono, >1 más agudo, <1 más grave
+      rate: 1.4             // velocidad de habla, >1 más rápido, <1 más lento
     });
 
     // audioStream es un ReadableStream → convertimos a Buffer
