@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { generateResponse } from "../services/responseBuilder.js";
 import { getHistory, saveHistory } from "../services/cacheManager.js";
-import { textToSpeech, speechToText } from "../services/speachToText.js";
+import { textToSpeechGoogle, speechToText } from "../services/speachToText.js";
 
 const router = express.Router();
 const upload = multer(); // en memoria
@@ -40,7 +40,7 @@ router.post("/", upload.single("audio"), async (req, res) => {
     let audioBase64 = null;
     try {
       const outputPath = path.join("temp", `tts_${Date.now()}.mp3`);
-      await textToSpeech(ttsText, outputPath);
+      await textToSpeecGoogle(ttsText, outputPath);
       audioBase64 = fs.readFileSync(outputPath, { encoding: "base64" });
       fs.unlinkSync(outputPath);
     } catch (err) {

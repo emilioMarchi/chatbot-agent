@@ -2,304 +2,172 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Chat con OVNI</title>
+<title>Asistente de Voz OVNI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(120deg, #e0f7fa, #80deea);
-  margin: 0;
-  padding: 0;
-}
-
-#chat-container {
-  max-width: 600px;
-  margin: 50px auto;
-  background: #ffffffee;
-  padding: 20px;
-  border-radius: 16px;
-  height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  backdrop-filter: blur(8px);
-}
-
-#messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  margin-bottom: 10px;
-  padding-right: 5px;
-}
-
-.message {
-  margin: 8px 0;
-  padding: 12px 18px;
-  border-radius: 25px;
-  word-wrap: break-word;
-  max-width: 80%;
-  font-size: 15px;
-  line-height: 1.4;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.user { background: linear-gradient(135deg, #a8e6cf, #dcedc1); text-align:right; margin-left:auto; }
-.bot { background: linear-gradient(135deg, #ffe0b2, #ffcc80); text-align:left; margin-right:auto; }
-
-.bot.typing::after {
-  content: '...';
-  animation: blink 1s infinite;
-  margin-left:5px;
-}
-
-@keyframes blink { 0%,50%,100% {opacity:1;} 25%,75% {opacity:0;} }
-
-/* Audio bubble */
-.audio-bubble { 
-  padding: 10px 14px;
-  border-radius: 20px;
-  max-width: 240px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  position: relative;
-}
-.audio-bubble.user { background: linear-gradient(135deg, #a8e6cf, #dcedc1); margin-left:auto; justify-content:flex-end; }
-.audio-bubble.bot { background: linear-gradient(135deg, #ffe0b2, #ffcc80); margin-right:auto; justify-content:flex-start; }
-
-.audio-bubble button.play-btn { border:none; background:none; cursor:pointer; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
-.audio-bubble button.play-btn svg { width:18px; height:18px; fill:#555; }
-.audio-bubble input[type=range] { flex-grow:1; }
-.audio-bubble select { width:50px; font-size:12px; }
-
-/* Input row */
-#input-container {
-  display: flex;
-  gap: 10px;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
-#user-input {
-  flex-grow:1;
-  padding:12px;
-  font-size:16px;
-  border:1px solid #ccc;
-  border-radius:25px;
-}
-
-button {
-  background:none;
-  border:none;
-  cursor:pointer;
-  padding:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  transition: background 0.3s, transform 0.05s;
-}
-button:hover { background: rgba(0,0,0,0.05); }
-button:active { transform: scale(0.98); }
-#send-button svg, #record-button svg { width:24px; height:24px; fill:#555; }
-
-/* Avatar */
-#agent-avatar {
-  width:50px; height:50px;
-  margin:10px auto;
-  display:flex; justify-content:space-between; align-items:flex-end;
-}
-.wave { width:5px; height:20px; background:#ccc; border-radius:2px; transform-origin:bottom; }
-.wave.animate { animation: wave 1s infinite; }
-.wave:nth-child(2).animate { animation-delay:0.2s; }
-.wave:nth-child(3).animate { animation-delay:0.4s; }
-@keyframes wave { 0%,100% {transform:scaleY(0.3);} 50% {transform:scaleY(1);} }
-
-/* Grabación */
-#record-button.recording { background: rgba(244,67,54,0.12); }
-#record-button.recording svg { fill:#d32f2f; }
-
-@media (max-width:600px){
-  #chat-container { margin:10px; height:90vh; padding:15px; }
-  #user-input { min-width:0; }
-  button { width:40px; height:40px; }
-}
+  body { font-family: sans-serif; display:flex; flex-direction:column; align-items:center; padding:20px; background:#f0f4f8; }
+  #chat-container { width:100%; max-width:600px; background:#fff; padding:20px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.1); }
+  #messages { max-height:60vh; overflow-y:auto; margin-bottom:10px; }
+  .message { padding:10px 15px; border-radius:20px; margin:6px 0; max-width:80%; }
+  .user { background:#a8e6cf; align-self:flex-end; text-align:right; }
+  .bot { background:#ffe0b2; align-self:flex-start; text-align:left; }
+  button { padding:12px 20px; border:none; border-radius:25px; cursor:pointer; background:#2196F3; color:white; font-size:16px; }
+  .status { font-size:12px; color:#555; margin-bottom:10px; }
 </style>
 </head>
 <body>
-<div id="chat-container">
-  <div id="agent-avatar">
-    <div class="wave"></div>
-    <div class="wave"></div>
-    <div class="wave"></div>
-  </div>
-  <div id="messages"></div>
 
-  <div id="input-container">
-    <input type="text" id="user-input" placeholder="Escribí tu mensaje...">
-    <button id="send-button" title="Enviar">
-      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-    </button>
-    <button id="record-button" title="Mantener para hablar">
-      <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 14 0h-2z"/></svg>
-    </button>
-  </div>
+<h2>Asistente de Voz OVNI</h2>
+<div id="chat-container">
+  <div id="messages"></div>
+  <div class="status" id="status">Esperando iniciar...</div>
+  <button id="start-btn">Iniciar Conversación</button>
 </div>
 
 <script>
 const messagesContainer = document.getElementById('messages');
-const input = document.getElementById('user-input');
-const sendButton = document.getElementById('send-button');
-const recordButton = document.getElementById('record-button');
-const agentWaves = document.querySelectorAll('#agent-avatar .wave');
-
+const statusEl = document.getElementById('status');
+const startBtn = document.getElementById('start-btn');
 let userId = sessionStorage.getItem('userId');
 if(!userId){ userId = crypto.randomUUID(); sessionStorage.setItem('userId', userId); }
 
-function setAvatarState(state){
-  agentWaves.forEach(w=>{
-    w.classList.remove("animate");
-    if(state==='botAudio') { w.style.background='#ff9800'; w.classList.add("animate"); }
-    else if(state==='userAudio') { w.style.background='#2196F3'; w.classList.add("animate"); }
-    else { w.style.background='#ccc'; }
-  });
-}
-
-function appendTextMessage(text, className){
+function appendMessage(text, className) {
   const div = document.createElement('div');
-  div.className = 'message '+className;
+  div.className = 'message ' + className;
   div.innerText = text;
   messagesContainer.appendChild(div);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  return div;
 }
 
-function appendAudioMessage(url, className, who='bot'){
-  const div = document.createElement('div');
-  div.className = 'message audio-bubble '+className;
+function setStatus(text) {
+  statusEl.innerText = text;
+  console.log("[STATUS]", text);
+}
 
-  const playBtn = document.createElement('button');
-  playBtn.className='play-btn';
-  playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+function appendAudioMessage(url) {
+  const audio = document.createElement('audio');
+  audio.src = url;
+  audio.autoplay = true;
+  messagesContainer.appendChild(audio);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  return audio;
+}
 
-  const audio = document.createElement('audio'); audio.src=url;
+async function startConversation() {
+  startBtn.disabled = true;
+  appendMessage("Asistente escuchando...", "bot");
+  setStatus("Grabación iniciada");
 
-  const slider = document.createElement('input'); slider.type='range'; slider.min=0; slider.max=100; slider.value=0;
-  const speedSelect = document.createElement('select');
-  [0.5,1,1.5,2].forEach(v=>{ const opt=document.createElement('option'); opt.value=v; opt.innerText=v+'x'; if(v===1) opt.selected=true; speedSelect.appendChild(opt); });
+  let mediaRecorder, audioChunks=[], micStream;
+  let recognizing = true;
 
-  playBtn.onclick = ()=>{
-    if(audio.paused){ 
-      audio.play(); 
-      playBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>`; 
-      setAvatarState(who==='bot'?'botAudio':'userAudio'); 
-    } else { 
-      audio.pause(); 
-      playBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`; 
-      setAvatarState('idle'); 
+  async function startListening() {
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      setStatus("Asistente escuchando...");
+
+      mediaRecorder = new MediaRecorder(micStream);
+      audioChunks = [];
+
+      const audioContext = new AudioContext();
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(micStream);
+      source.connect(analyser);
+      analyser.fftSize = 2048;
+      const dataArray = new Uint8Array(analyser.fftSize);
+
+      let silenceStart = null;
+      let maxRecordingTime = 10000; // 10s
+      let recordingStart = Date.now();
+
+      mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+      mediaRecorder.start();
+
+      function checkSilence() {
+        analyser.getByteTimeDomainData(dataArray);
+        const avg = dataArray.reduce((a,v)=>a+Math.abs(v-128),0)/dataArray.length;
+        const now = Date.now();
+
+        if(avg < 5) {
+          if(!silenceStart) silenceStart = now;
+          if(now - silenceStart > 700 || now - recordingStart > maxRecordingTime) {
+            setStatus("Procesando mensaje...");
+            stopListening();
+            return;
+          }
+        } else {
+          silenceStart = null;
+        }
+
+        if(recognizing) requestAnimationFrame(checkSilence);
+      }
+
+      checkSilence();
+
+    } catch(err) {
+      console.error("Error getUserMedia:", err);
+      alert("Error accediendo al micrófono: " + err.message);
+      setStatus("Error acceso micrófono ❌");
     }
-  };
-
-  if(who==='bot'){ audio.autoplay = true; audio.play().catch(()=>{}); }
-
-  audio.ontimeupdate = ()=> slider.value=(audio.currentTime/audio.duration)*100||0;
-  slider.oninput = ()=> audio.currentTime=(slider.value/100)*audio.duration;
-  speedSelect.onchange = ()=> audio.playbackRate=parseFloat(speedSelect.value);
-
-  audio.onended = ()=> { playBtn.innerHTML=`<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`; setAvatarState('idle'); };
-
-  div.appendChild(playBtn);
-  div.appendChild(slider);
-  div.appendChild(speedSelect);
-  messagesContainer.appendChild(div);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  return div;
-}
-
-// ===== Enviar texto y audio con typing =====
-async function sendMessage(text){
-  if(!text) return;
-  appendTextMessage(text,'user');
-  input.value='';
-
-  // Placeholder typing
-  const botPlaceholder = document.createElement('div');
-  botPlaceholder.className = 'message bot typing';
-  messagesContainer.appendChild(botPlaceholder);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-  setAvatarState('botAudio');
-
-  try{
-    const res = await fetch("/chatbot",{ method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({userId,message:text}) });
-    const data = await res.json();
-
-    botPlaceholder.remove(); // siempre removemos placeholder antes de mostrar contenido
-
-    if(data.reply) appendTextMessage(data.reply,'bot');
-   
-
-    setAvatarState('idle');
-  }catch(err){
-    console.error(err);
-    botPlaceholder.remove();
-    appendTextMessage('Error al procesar la respuesta.','bot');
-    setAvatarState('idle');
   }
+
+  async function stopListening() {
+    if(!mediaRecorder) return;
+    mediaRecorder.stop();
+    micStream.getTracks().forEach(t=>t.stop());
+    recognizing = false;
+
+    const audioBlob = new Blob(audioChunks,{ type:'audio/webm' });
+    audioChunks = [];
+    mediaRecorder = null;
+
+    if(audioBlob.size < 100){
+      setStatus("Audio muy corto, reiniciando escucha...");
+      recognizing = true;
+      startListening();
+      return;
+    }
+
+    appendMessage("Procesando tu mensaje...", "user");
+    setStatus("Enviando audio al servidor...");
+
+    const formData = new FormData();
+    formData.append("audio", audioBlob, "voz.webm");
+    formData.append("userId", userId);
+
+    try {
+      const res = await fetch("/voice-session", { method:"POST", body:formData });
+      setStatus("Respuesta recibida");
+      const data = await res.json();
+
+      if(data.userText) appendMessage(data.userText, "user");
+
+      if(data.audioBase64){
+        setStatus("Reproduciendo respuesta del asistente...");
+        const botAudioBlob = new Blob([Uint8Array.from(atob(data.audioBase64), c=>c.charCodeAt(0))], {type:'audio/mp3'});
+        const audioEl = appendAudioMessage(URL.createObjectURL(botAudioBlob));
+        audioEl.onended = () => {
+          setStatus("Respuesta terminada, asistente escuchando...");
+          recognizing = true;
+          startListening();
+        };
+      } else if(data.reply){
+        appendMessage(data.reply, "bot");
+        setStatus("Respuesta del bot recibida, reiniciando escucha...");
+        recognizing = true;
+        startListening();
+      }
+    } catch(err){
+      console.error("Error fetch /voice-session:", err);
+      alert("Error procesando audio: " + err.message);
+      setStatus("Error procesando audio ❌");
+    }
+  }
+
+  await startListening();
 }
 
-sendButton.onclick = ()=> sendMessage(input.value);
-input.addEventListener('keypress', e => { if(e.key==='Enter') sendMessage(input.value); });
-
-// ===== Grabación =====
-let mediaRecorder=null, audioChunks=[], micStream=null;
-async function startRecording(){ 
-  try{ micStream = await navigator.mediaDevices.getUserMedia({audio:true}); } catch(e){ console.error(e); return; }
-  recordButton.classList.add('recording'); setAvatarState('userAudio');
-  mediaRecorder=new MediaRecorder(micStream); audioChunks=[]; mediaRecorder.ondataavailable=e=>audioChunks.push(e.data); mediaRecorder.start();
-}
-async function stopRecording(){
-  if(!mediaRecorder) return;
-  recordButton.classList.remove('recording'); setAvatarState('idle');
-  await new Promise(res=>{ mediaRecorder.onstop=res; mediaRecorder.stop(); });
-  if(micStream){ micStream.getTracks().forEach(t=>t.stop()); micStream=null; }
-
-  const audioBlob = new Blob(audioChunks,{type:'audio/webm'}); audioChunks=[]; mediaRecorder=null;
-  if(audioBlob.size<100) return;
-  const userURL=URL.createObjectURL(audioBlob); appendAudioMessage(userURL,'user','user');
-
-  try{
-    const formData=new FormData(); 
-    formData.append('audio',audioBlob,'voz.webm'); 
-    formData.append('userId',userId);
-
-    const botPlaceholder = document.createElement('div');
-    botPlaceholder.className = 'message bot typing';
-    messagesContainer.appendChild(botPlaceholder);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-    const res=await fetch('/chatbot',{method:'POST',body:formData}); 
-    const data=await res.json();
-
-    botPlaceholder.remove();
-
-    if(data.audioBase64){ 
-      const botAudioBlob=new Blob([Uint8Array.from(atob(data.audioBase64),c=>c.charCodeAt(0))], {type:'audio/mp3'}); 
-      appendAudioMessage(URL.createObjectURL(botAudioBlob),'bot','bot'); 
-    } else if(data.reply){ appendTextMessage(data.reply,'bot'); }
-
-    setAvatarState('idle');
-  }catch(err){ console.error(err); appendTextMessage('Error al procesar el audio.','bot'); setAvatarState('idle'); }
-}
-
-const start=e=>{ e.preventDefault(); if(!mediaRecorder) startRecording(); };
-const end=e=>{ e.preventDefault(); if(mediaRecorder) stopRecording(); };
-recordButton.addEventListener("mousedown", start); 
-recordButton.addEventListener("touchstart", start,{passive:false});
-recordButton.addEventListener("mouseup", end); 
-recordButton.addEventListener("mouseleave", end); 
-recordButton.addEventListener("touchend", end,{passive:false});
+startBtn.onclick = startConversation;
 </script>
 </body>
 </html>

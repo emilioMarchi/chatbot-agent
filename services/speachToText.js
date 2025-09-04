@@ -1,9 +1,10 @@
 import fs from "fs";
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 import speech from "@google-cloud/speech";
-
+import textToSpeech from "@google-cloud/text-to-speech";
 
 const sttClient = new speech.SpeechClient();
+const ttsClient = new textToSpeech.TextToSpeechClient();
 
 const elevenlabs = new ElevenLabsClient({
   apiKey: process.env.ELEVEN_API_KEY
@@ -18,24 +19,23 @@ async function streamToBuffer(stream) {
   return Buffer.concat(chunks);
 }
 
-// Texto -> Audio con ElevenLabs
-async function textToSpeech(text, outputPath) {
+// -----------------------------
+// ElevenLabs: Texto -> Audio
+// -----------------------------
+async function textToSpeechElevenLabs(text, outputPath) {
   try {
     const audioStream = await elevenlabs.textToSpeech.convert("21m00Tcm4TlvDq8ikWAM", {
       text,
       modelId: "eleven_multilingual_v2",
-
       outputFormat: "mp3_44100_128",
-      stability: 0.1,       // control de "consistencia" de la voz, 0 a 1
-      similarityBoost: 0.8, // qué tanto se parece al voiceId original, 0 a 1
-      style: "happy",       // puede ser "neutral", "sad", "happy", etc. según el voiceId
-      pitch: 1.7,           // ajuste del tono, >1 más agudo, <1 más grave
-      rate: 1.4             // velocidad de habla, >1 más rápido, <1 más lento
+      stability: 0.1,
+      similarityBoost: 0.8,
+      style: "happy",
+      pitch: 1.7,
+      rate: 1.4
     });
 
-    // audioStream es un ReadableStream → convertimos a Buffer
     const buffer = await streamToBuffer(audioStream);
-
     fs.writeFileSync(outputPath, buffer);
     return outputPath;
 
@@ -45,7 +45,31 @@ async function textToSpeech(text, outputPath) {
   }
 }
 
-// Audio -> Texto con Google STT
+// -----------------------------
+// Google Cloud TTS: Texto -> Audio
+// -----------------------------
+async function textToSpeechGoogle(text, outputPath) {
+  try {
+    const request = {
+      input: { text },
+      // Puedes ajustar voz, idioma, pitch, speakingRate
+      voice: { languageCode: "es-ES", ssmlGender: "FEMALE" },
+      audioConfig: { audioEncoding: "MP3", pitch: 1.7, speakingRate: 1.4 },
+    };
+
+    const [response] = await ttsClient.synthesizeSpeech(request);
+    fs.writeFileSync(outputPath, response.audioContent);
+    return outputPath;
+
+  } catch (err) {
+    console.error("Error TTS Google:", err);
+    throw err;
+  }
+}
+
+// -----------------------------
+// Google Cloud STT: Audio -> Texto
+// -----------------------------
 async function speechToText(audioBuffer) {
   try {
     const request = {
@@ -70,4 +94,4 @@ async function speechToText(audioBuffer) {
   }
 }
 
-export { textToSpeech, speechToText };
+export { textToSpeechElevenLabs, textToSpeechGoogle, speechToText };
